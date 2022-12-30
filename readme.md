@@ -1,0 +1,1 @@
+### Use 'netlify init' to connect to the Netlify project and pull env variables

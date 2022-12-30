@@ -11,13 +11,7 @@ export default async (request: Request, context: Context) => {
   }
 
   let invoiceName: string;
-
-  try {
-    invoiceName = atob(url.searchParams.get("id")!);
-  } catch(e) {
-    console.log(e);
-    return new Response('<!doctype html><html><body>Invoice ID not found.</body></html>', response);
-  }
+  invoiceName = url.searchParams.get("id")!;
 
   let sheetId: string = Deno.env.get("GOOGLE_SHEET_ID");
   let sheetKey: string = Deno.env.get("GOOGLE_SHEET_KEY");
@@ -26,7 +20,7 @@ export default async (request: Request, context: Context) => {
 
   // Get all sheet names: https://sheets.googleapis.com/v4/spreadsheets/${sheetId}?fields=sheets%2Fproperties%2Ftitle&key=${sheetKey}
   // From https://stackoverflow.com/questions/55018655/get-all-data-of-multiple-worksheet-in-google-api-in-js
-  const jsonResponse = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/2022-2023-T2?key=${sheetKey}`);
+  const jsonResponse = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/Sheet1?key=${sheetKey}`);
   const data = await jsonResponse.json();
 
   const columnNames = data.values.shift();
@@ -34,7 +28,11 @@ export default async (request: Request, context: Context) => {
   const invoiceData = data.values;
   let currentInvoice = invoiceData.find((item: string) => item.includes(invoiceName));
 
-  currentInvoice.length = currentInvoice.length - 3; // Remove the last 3 columns, as they're not used
+  if(!currentInvoice){
+    return new Response('<!doctype html><html><body>Invoice ID not found.</body></html>', response);
+  }
+
+  currentInvoice.length = currentInvoice.length - 1; // Remove the last column, as it's not used
 
   currentInvoice.forEach( (val: string, idx: string) =>  text = text.replaceAll(tokenNames[idx], val) );
 
