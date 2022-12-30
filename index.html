@@ -1,0 +1,241 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <title>Invoice</title>
+
+  <style>
+    html,
+    body {
+      box-sizing: border-box;
+    }
+    *,
+    *:before,
+    *:after {
+      box-sizing: inherit;
+    }
+    html, body {
+      margin: 0;
+      line-height: 1.5;
+      color: #000;
+    }
+    @media(max-width: 500px) {
+      html, body {
+        font-size: 14px;
+      }
+    }
+    img {
+      max-width: 100%;
+    }
+    .invoice-container {
+      max-width: 650px;
+      margin: 1rem auto;
+      padding: 1rem;
+    }
+    .invoice-container > .grid-row {
+      margin-bottom: 3rem;
+    }
+    .grid-row {
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+    }
+    @media(max-width: 500px) {
+      .grid-row {
+        gap: 5px;
+      }
+    }
+    .grid-col {
+      position: relative;
+      /* padding: 3rem 4rem; */
+    }
+
+    .main-table {
+      width: 100%;
+      text-align: left;
+      border-spacing: 0;
+      border-collapse: collapse;
+      border: 1px solid #bbb;
+    }
+
+    th {
+      background: #ddd;
+      padding: 1rem;
+    }
+    td {
+      padding: 0.5rem 1rem;
+      border: 1px solid #bbb;
+    }
+    .cell-bg {
+      font-weight: bold;
+      background: #ddd;
+    }
+    .invoice-details > .grid-row {
+      padding: 0 10px;
+    }
+    .invoice-details > .grid-row:first-child {
+      background: #eee;
+    }
+    .invoice-details > .grid-row:last-child {
+      background: #ddd;
+    }
+    .m-top-0 {
+      margin-top: 0;
+    }
+    .main-h {
+      font-size: 2.8rem;
+    }
+    .logo {
+      max-width: 160px;
+    }
+    @media print {
+      html,body {
+        font-size: 14px;
+        
+      }
+      .download-btn {
+        display: none;
+      }
+    }
+
+    .download-btn {
+      display: inline-block;
+      background: #333;
+      border: 0;
+      color: white;
+      padding: 10px 15px;
+      cursor: pointer;
+      border-radius: 35px;
+      /* font: inherit; */
+      line-height: normal;
+      overflow: visible;
+      -webkit-appearance: button; /* for input */
+      -webkit-user-select: none; /* for button */
+          -ms-user-select: none;
+    }
+    
+  </style>
+
+</head>
+
+<body>
+
+  <div id="invoice" class="invoice-container">
+
+    <div class="grid-row" style="align-items: center">
+      <div class="grid-col">
+        <h1 class="main-h m-top-0">Invoice</h1>
+      </div>
+      <div class="grid-col" style="text-align: right">
+        <h1>Your logo here</h1>
+        <h2 class="m-top-0">https://mycompany.co.uk</h2>
+      </div>
+    </div>
+
+    <div class="grid-row">
+      <div class="grid-col">
+        <h2 class="m-top-0">My Company Ltd</h2>
+        <address>
+          123 Street name<br>
+          London, WC2H GL2<br>
+          United Kingdom<br><br>
+          Tel: +44(0) 7123 456 789<br>
+          Email: mycompany@company.com
+        </address>
+      </div>
+      <div class="grid-col invoice-details">
+        <div class="grid-row">
+          <div class="grid-col">
+            <p><strong>Date</strong></p>
+          </div>
+          <div class="grid-col">
+            <p>{{Date}}</p>
+          </div>
+        </div>
+        <div class="grid-row">
+          <div class="grid-col">
+            <p><strong>Invoice No</strong></p>
+          </div>
+          <div class="grid-col">
+            <p>{{Invoice No}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-row">
+      <div class="grid-col">
+        <h2>Bank details</h2>
+        <p><strong>Bank PLC</strong><br>
+        <strong>Account No:</strong> 12345678<br>
+        <strong>Sort Code:</strong> 11-22-33</p>
+      </div>
+      <div class="grid-col">
+        <h2>Invoice to</h2>
+        <h3 style="margin-bottom: 0;">{{Bill To}}</h3>
+        <p style="margin-top: 5px">{{Email}}</p>
+      </div>
+    </div>
+
+    <table class="main-table">
+      <tr>
+        <th>Quantity</th>
+        <th>Description</th>
+        <th>Unit Price</th>
+        <th>Subtotal</th>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>{{Description}}<br>{{Child}}
+        </td>
+        <td>{{Unit Price}}</td>
+        <td>{{Total price}}</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+        <td>VAT</td>
+        <td>0.00</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+        <td class="cell-bg">Total</td>
+        <td class="cell-bg">{{Total price}}</td>
+      </tr>
+    </table> 
+
+    <p style="text-align: center; margin-top: 35px;">
+      <button class="download-btn" type="button">Download PDF</button>
+    </p>
+
+  </div>
+
+  <script src="script/html2pdf.bundle.min.js"></script>
+  <script>
+    var element = document.getElementById('invoice')
+
+    var opt = {
+      margin:       1,
+      filename:     'invoice.pdf',
+      image:        { type: 'jpeg', quality: 0.95 },
+      html2canvas:  { scale: 2 },
+      // jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+    }
+
+    const downloadBtn = document.querySelector('.download-btn')
+
+    downloadBtn.addEventListener('click', () => {
+      downloadBtn.style.display = 'none'
+      html2pdf().set(opt).from(element).save().then(()=> downloadBtn.style.display = 'inline-block')
+    })
+    // html2pdf(element);
+  </script>
+
+</body>
+</html>
