@@ -1,3 +1,3 @@
-Generates html/pdf invoices from a google speadsheet 
+Generates html/pdf invoices from a google speadsheet.
 
-### Use 'netlify init' to connect to the Netlify project and pull env variables
+Deployed as a Netlify project/serverless function (use [Netlify CLI](https://docs.netlify.com/cli/get-started/)). Use 'netlify init' to connect to the Netlify project and pull env variables.
